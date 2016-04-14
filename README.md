@@ -81,14 +81,16 @@ After rebuilding the app and restarting it you can hit the health page again [he
 1. Create an endpoint under **/feedback** that will return a Product's rating by a specific user.
 This is a GET method and takes the following path parameters:
 
-* pid - Product Id
-* uid - User Id
+  * pid - Product Id
+  * uid - User Id
+
 2. Create an endpoint under **/feedback** that will update a Product's rating for a specific user.
 THis is a POST method and takes the following path parameters:
 
-* pid - Product Id
-* uid - User Id
-* rating - floating point rating
+  * pid - Product Id
+  * uid - User Id
+  * rating - floating point rating
+
 3. Create an endpoint that returns the average rating for a product id.  This is a GET method and takes just pid.
 
 ## TODO
