@@ -1,6 +1,7 @@
 # Spring Boot Starter Application
 
 ## Getting Started with Boot
+
 1. Go create a [Spring boot app](http://start.spring.io)
 2. Choose build tool of choice for project building (We use Gradle)
 3. For now leave group and artifact alone
@@ -34,12 +35,18 @@
 7. Congratulations!  You now have a working basic Rest based webservice with Spring Boot.
 
 ## Customer Feedback Service
+
 This service will allow a client to "rate a product".
+
 ### Requirements
+
 * Customer should be able to give feedback on a product via a rating (stars?) and description.
 * Customer should be able to see the current average rating ofa product
+
 ## Steps:
+
 ### Getting Redis Setup:
+
 Install Redis on your machine.
 On a mac *brew install redis*.
 On a Windows machine go [here](https://github.com/MSOpenTech/redis/releases)
