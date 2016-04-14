@@ -30,7 +30,35 @@
 6. In a browser,  verify the service displays "Hello World" at [http://localhost:8080/helloworld](http://localhost:8080/helloworld).
 7. Congratulations!  You now have a working basic Rest based webservice with Spring Boot.
 
-## Starting on a Product rating service
+## Customer Feedback Service
 This service will allow a client to "rate a product".
+### Requirements
+* Customer should be able to give feedback on a product via a rating (stars?) and description.
+* Customer should be able to see the current average rating ofa product
+### Steps:
+#### Getting Redis Setup:
+Install Redis on your machine.
+On a mac *brew install redis*.
+On a Windows machine go [here](https://github.com/MSOpenTech/redis/releases)
+Once installed run:
+>redis-server
+### Add Redis to the application
+Modify the build.gradle file to have the following compile time dependancy:
+>compile('org.springframework.boot:spring-boot-starter-redis')
+
+After rebuilding the app and restarting it you can hit the health page again [here](http://localhost:8080/health) to see something like:
+  {
+    status: "UP",
+    diskSpace: {
+      status: "UP",
+      total: 499283816448,
+      free: 446935990272,
+      threshold: 10485760
+    },
+    redis: {
+      status: "UP",
+      version: "3.0.6"
+    }
+  }
 
 ## TODO
