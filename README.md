@@ -21,7 +21,7 @@
 4. Create a public method that returns a string, is annotated with *@RequestMapping(value="helloworld")*, and returns the string "Hello World"
 
   @RequestMapping(value="/helloworld")
-  public String hellow() {
+  public String hello() {
       return "Hello World"
   }
 
