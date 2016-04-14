@@ -92,5 +92,6 @@ THis is a POST method and takes the following path parameters:
   * rating - floating point rating
 
 3. Create an endpoint under **/feedback** that returns the average rating for a product id.  This is a GET method and takes just pid.
+4. Create and endpoint under **/feedback** that given a Product id returns a histogram of the ratings. This is  GET method and takes just pid.
 
 ## TODO
