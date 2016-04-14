@@ -1,7 +1,10 @@
 package com.example.controller;
 
+import java.util.DoubleSummaryStatistics;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,20 +31,23 @@ public class FeedbackController {
     HashOperations hashOps = redisTemplate.opsForHash();
     String key = KEY_PREFIX + pid;
     hashOps.put(key, uid, rating);
-    return "Ok: key=" + key;
+    return "Okay: key=" + key;
   }
 
   @RequestMapping(value = "/feedback/{pid}/{uid}")
   public String getUserFeedback(@PathVariable("pid") String pid,
                                 @PathVariable("uid") String uid) {
     HashOperations hashOps = redisTemplate.opsForHash();
-    return "Ok: " + hashOps.get(KEY_PREFIX + pid, uid);
+    return "Okay: " + hashOps.get(KEY_PREFIX + pid, uid);
   }
 
   @RequestMapping(value = "/feedback/{pid}")
-  public String getAverageFeedback(@PathVariable("pid") String pid) {
+  public DoubleSummaryStatistics getAverageFeedback(@PathVariable("pid") String pid) {
     HashOperations hashOps = redisTemplate.opsForHash();
-    Map entries = hashOps.entries(KEY_PREFIX + pid);
-    return "Ok: ";
+    Map<String, Double> entries = hashOps.entries(KEY_PREFIX + pid);
+
+    return entries.values().stream()
+        .mapToDouble(e -> e)
+        .summaryStatistics();
   }
 }
