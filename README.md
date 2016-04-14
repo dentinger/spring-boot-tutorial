@@ -10,3 +10,5 @@
 7. run ./gradlew clean build bootRun and wait for internet to finish downloading
 8. In a browser,  verify the app health at [http://localhost:8080/health](http://localhost:8080/health).
 9. Congratulations! You now have a working basic web application that looks just like this one!
+
+## TODO
