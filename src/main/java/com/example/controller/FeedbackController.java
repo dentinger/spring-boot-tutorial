@@ -1,10 +1,9 @@
 package com.example.controller;
 
 import java.util.DoubleSummaryStatistics;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
-import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -49,5 +48,16 @@ public class FeedbackController {
     return entries.values().stream()
         .mapToDouble(e -> e)
         .summaryStatistics();
+  }
+
+  @RequestMapping(value = "/feedback/{pid}/histogram")
+  public Map getFeedbackHistogram(@PathVariable("pid") String pid) {
+    HashOperations hashOps = redisTemplate.opsForHash();
+    Map<String, Double> entries = hashOps.entries(KEY_PREFIX + pid);
+
+    HashMap<Integer, Long> countByRating = entries.values().stream()
+        .collect(Collectors.groupingBy(Double::intValue, HashMap::new, Collectors.counting()));
+
+    return countByRating;
   }
 }
