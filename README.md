@@ -8,7 +8,8 @@
 5. Click Generate Project - this generates a starter zip and downloads it.
 6. Unzip project contents to chosen directory
 7. run
->./gradlew clean build bootRun
+
+    ./gradlew clean build bootRun
 
 8. In a browser,  verify the app health at [http://localhost:8080/health](http://localhost:8080/health).
 9. Congratulations! You now have a working basic web application that looks just like this one!
@@ -20,13 +21,15 @@
 3. Annotate the class with the following *@RestController*
 4. Create a public method that returns a string, is annotated with *@RequestMapping(value="helloworld")*, and returns the string "Hello World"
 
-  @RequestMapping(value="/helloworld")
-  public String hello() {
+    @RequestMapping(value="/helloworld")
+      public String hello() {
       return "Hello World"
-  }
+      }
 
 5. Build and run the app either in your IDE or from the command line
->./gradlew clean build bootRun
+
+    ./gradlew clean build bootRun
+
 6. In a browser,  verify the service displays "Hello World" at [http://localhost:8080/helloworld](http://localhost:8080/helloworld).
 7. Congratulations!  You now have a working basic Rest based webservice with Spring Boot.
 
@@ -42,16 +45,16 @@ On a mac *brew install redis*.
 On a Windows machine go [here](https://github.com/MSOpenTech/redis/releases)
 Once installed run:
 
->redis-server
+    redis-server
 
 ### Add Redis to the application
 Modify the build.gradle file to have the following compile time dependancy:
 
->compile('org.springframework.boot:spring-boot-starter-redis')
+    compile('org.springframework.boot:spring-boot-starter-redis')
 
 After rebuilding the app and restarting it you can hit the health page again [here](http://localhost:8080/health) to see something like:
 
-    ```
+
     {
       status: "UP",
       diskSpace: {
@@ -65,6 +68,6 @@ After rebuilding the app and restarting it you can hit the health page again [he
         version: "3.0.6"
     }
     }
-    ```
+
 
 ## TODO
