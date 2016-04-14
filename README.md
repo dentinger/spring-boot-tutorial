@@ -41,24 +41,30 @@ Install Redis on your machine.
 On a mac *brew install redis*.
 On a Windows machine go [here](https://github.com/MSOpenTech/redis/releases)
 Once installed run:
+
 >redis-server
+
 ### Add Redis to the application
 Modify the build.gradle file to have the following compile time dependancy:
+
 >compile('org.springframework.boot:spring-boot-starter-redis')
 
 After rebuilding the app and restarting it you can hit the health page again [here](http://localhost:8080/health) to see something like:
-  {
-    status: "UP",
-    diskSpace: {
+
+    ```
+    {
       status: "UP",
-      total: 499283816448,
-      free: 446935990272,
-      threshold: 10485760
-    },
-    redis: {
-      status: "UP",
-      version: "3.0.6"
+      diskSpace: {
+        status: "UP",
+        total: 499283816448,
+        free: 446935990272,
+        threshold: 10485760
+      },
+      redis: {
+        status: "UP",
+        version: "3.0.6"
     }
-  }
+    }
+    ```
 
 ## TODO
