@@ -20,11 +20,12 @@
 3. Annotate the class with the following *@RestController*
 4. Create a public method that returns a string, is annotated with *@RequestMapping(value="helloworld")*, and returns the string "Hello World"
 
-    @RequestMapping(value="/helloworld")
-    public String hellow() {
+  @RequestMapping(value="/helloworld")
+  public String hellow() {
       return "Hello World"
-    }
+  }
 
 5. Build and run the app either in your IDE or from the command line
 >./gradlew clean build bootRun
+
 ## TODO
