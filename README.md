@@ -94,4 +94,14 @@ THis is a POST method and takes the following path parameters:
 3. Create an endpoint under **/feedback** that returns the average rating for a product id.  This is a GET method and takes just pid.
 4. Create and endpoint under **/feedback** that given a Product id returns a histogram of the ratings. This is  GET method and takes just pid.
 
+### Let's have a jdbc database also
+
+Let's allow a user to add rating comments with their rating and keep their ratings around for a while.  That seems like it is something useful.
+
+1. Modify the build.gradle file to have the following compile time dependancy:
+
+       compile('org.springframework.boot:spring-boot-starter-data-jpa')
+       compile("com.h2database:h2")
+
+
 ## TODO
