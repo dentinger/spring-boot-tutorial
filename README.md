@@ -30,4 +30,7 @@
 6. In a browser,  verify the service displays "Hello World" at [http://localhost:8080/helloworld](http://localhost:8080/helloworld).
 7. Congratulations!  You now have a working basic Rest based webservice with Spring Boot.
 
+## Starting on a Product rating service
+This service will allow a client to "rate a product".
+
 ## TODO
