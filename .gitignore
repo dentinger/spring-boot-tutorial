@@ -114,3 +114,4 @@ local.properties
 # Code Recommenders
 .recommenders/
 
+dump.rdb
