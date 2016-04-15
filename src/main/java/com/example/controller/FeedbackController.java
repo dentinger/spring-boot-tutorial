@@ -1,7 +1,10 @@
 package com.example.controller;
 
+import com.example.domain.User;
+import com.example.service.ReviewService;
 import java.util.DoubleSummaryStatistics;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,9 @@ public class FeedbackController {
   @Autowired
   private RedisTemplate redisTemplate;
 
+  @Autowired
+  private ReviewService reviewService;
+
   @RequestMapping(value = "/feedback/{pid}/{uid}/{rating:.+}", method = POST)
   public String submitUserFeedback(@PathVariable("pid") String pid,
                                    @PathVariable("uid") String uid,
@@ -30,6 +36,8 @@ public class FeedbackController {
     HashOperations hashOps = redisTemplate.opsForHash();
     String key = KEY_PREFIX + pid;
     hashOps.put(key, uid, rating);
+
+    reviewService.processReview(uid, pid, rating);
     return "Okay: key=" + key;
   }
 
@@ -59,5 +67,10 @@ public class FeedbackController {
         .collect(Collectors.groupingBy(Double::intValue, HashMap::new, Collectors.counting()));
 
     return countByRating;
+  }
+
+  @RequestMapping(value = "/feedback/db/user/{uid}")
+  public Map<String, Object> findUserData(@PathVariable("uid") String userid) {
+    return reviewService.findUser(userid);
   }
 }
