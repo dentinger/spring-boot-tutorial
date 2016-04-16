@@ -1,18 +1,32 @@
 package com.example.domain;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import javax.persistence.*;
 import java.util.Set;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 
 @Entity
+@JsonFilter("Product")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Product {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
+  @Column(unique = true)
+  private String productId;
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
+  @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+  private Set<UserReview> reviews;
+
+  public Product() {}
+
+  public Product(String productId) {
+    this.productId = productId;
+  }
 
   public long getId() {
     return id;
@@ -36,17 +50,6 @@ public class Product {
 
   public void setReviews(Set<UserReview> reviews) {
     this.reviews = reviews;
-  }
-
-  private String productId;
-
-  @ManyToMany
-  private Set<UserReview> reviews;
-
-  public Product() {}
-
-  public Product(String productId) {
-    this.productId = productId;
   }
 
   @Override
