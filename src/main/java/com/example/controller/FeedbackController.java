@@ -3,24 +3,19 @@ package com.example.controller;
 import com.example.domain.Product;
 import com.example.domain.User;
 import com.example.service.ReviewService;
-import java.util.DoubleSummaryStatistics;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.DoubleSummaryStatistics;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -30,9 +25,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class FeedbackController {
 
   public static final String KEY_PREFIX = "org.example.feedback:";
-
-  @Autowired
-  private ObjectMapper objectMapper;
 
   @Autowired
   private RedisTemplate redisTemplate;
@@ -78,28 +70,5 @@ public class FeedbackController {
         .collect(Collectors.groupingBy(Double::intValue, HashMap::new, Collectors.counting()));
 
     return countByRating;
-  }
-
-  @RequestMapping(value = "/feedback/db/user/{uid}")
-  public User findUserData(@PathVariable("uid") String userid) {
-
-    final SimpleFilterProvider filter = new SimpleFilterProvider();
-    filter.addFilter("Product", SimpleBeanPropertyFilter.serializeAllExcept("reviews"));
-    filter.addFilter("User", SimpleBeanPropertyFilter.serializeAll());
-    objectMapper.setFilterProvider(filter);
-
-    return reviewService.findUser(userid);
-  }
-
-  @RequestMapping(value = "/feedback/db/product/{pid}")
-  public Product findProductData(@PathVariable("pid") String productId) {
-
-    final SimpleFilterProvider filter = new SimpleFilterProvider();
-    filter.addFilter("Product", SimpleBeanPropertyFilter.serializeAll());
-    filter.addFilter("User", SimpleBeanPropertyFilter.serializeAllExcept("userReviewList"));
-    objectMapper.setFilterProvider(filter);
-
-    return reviewService.findProduct(productId);
-            //new ResponseEntity<>(objectMapper.writer(filter).writeValueAsString(product), HttpStatus.OK);
   }
 }

@@ -1,26 +1,27 @@
 package com.example.domain;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@JsonFilter("Product")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Product {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
+
   @Column(unique = true)
   private String productId;
-  @JsonInclude(JsonInclude.Include.NON_EMPTY)
+
   @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
   private Set<UserReview> reviews;
+
+  ///
 
   public Product() {}
 

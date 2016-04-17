@@ -37,16 +37,6 @@ public class ReviewService {
     }
 
     UserReview review = userReviewRepository.save(new UserReview(currentUser, productUnderReview, rating, "None"));
-//    currentUser.addUserReview(review);
-//    userRepository.save(currentUser);
     return true;
-  }
-
-  public User findUser(String userid) {
-    return userRepository.findByUserId(userid);
-  }
-
-  public Product findProduct(String productId) {
-    return productRepository.findByProductId(productId);
   }
 }

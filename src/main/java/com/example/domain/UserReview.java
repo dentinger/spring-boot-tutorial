@@ -2,27 +2,30 @@ package com.example.domain;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.rest.core.config.Projection;
 import org.springframework.util.StringUtils;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class UserReview {
 
   @Id
   @GeneratedValue(strategy= GenerationType.AUTO)
   private long id;
+
   @ManyToOne(optional = false)
-  //@JsonBackReference
   private User user;
+
   @ManyToOne(optional = false)
-  //@JsonBackReference
-  //@JsonManagedReference
   private Product product;
+
   private Double rating;
+
   private String comments;
+
+  ///
 
   public UserReview() {}
 
@@ -78,5 +81,17 @@ public class UserReview {
     return String.format(
         "UserReview[id=%d, userid='%s', rating='%f', productId='%s', comment='%s']",
         id, user.toString(), rating, product.toString(), StringUtils.isEmpty(comments)?"none":comments);
+  }
+
+  /**
+   */
+  @Projection(name = "inlineUserReview", types = { UserReview.class })
+  public interface UserReviewExcerpt {
+      @Value("#{target.user.getUserId()}")
+      String getUserId();
+      @Value("#{target.product.getProductId()}")
+      String getProductId();
+      Double getRating();
+      String getComments();
   }
 }

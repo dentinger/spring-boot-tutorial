@@ -1,27 +1,28 @@
 package com.example.domain;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.springframework.data.rest.core.config.Projection;
 
 import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
 
 @Entity
-@JsonFilter("User")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
 
   @Id
   @GeneratedValue(strategy= GenerationType.AUTO)
   private long id;
+
   @Column(unique = true)
   private String userId;
-  @JsonInclude(JsonInclude.Include.NON_EMPTY)
+
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private List<UserReview> userReviewList = new LinkedList<>();
+
+  ///
 
   public User() {}
 
@@ -62,6 +63,16 @@ public class User {
     return String.format(
             "User[id=%d, userid='%s']",
             id, userId);
+  }
 
+  @Projection(name = "noReviews", types = { User.class })
+  public interface WithoutReviews {
+    String getUserId();
+  }
+
+  @Projection(name = "withReviews", types = { User.class })
+  public interface WithReviews {
+      String getUserId();
+      List<UserReview> getUserReviewList();
   }
 }
