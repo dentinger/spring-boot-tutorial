@@ -104,9 +104,9 @@ retrieve them. (Why save if you won't retrieve, right?')  Let's get started...
 
 1. Modify the build.gradle file to have the following compile time dependancy:
 
-       compile('org.springframework.boot:spring-boot-starter-data-jpa')
-       compile('org.springframework.boot:spring-boot-starter-data-rest')
-       compile("com.h2database:h2")
+        compile('org.springframework.boot:spring-boot-starter-data-jpa')
+        compile('org.springframework.boot:spring-boot-starter-data-rest')
+        compile("com.h2database:h2")
 
 2. Create a few JPA based repositories.  One for each of the underlying pieces of data we care about.
  Let's start with a repo for Products, Users, and finally one for UserReviews.
