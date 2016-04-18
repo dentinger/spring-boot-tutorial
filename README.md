@@ -93,15 +93,56 @@ THis is a POST method and takes the following path parameters:
 
 3. Create an endpoint under **/feedback** that returns the average rating for a product id.  This is a GET method and takes just pid.
 4. Create and endpoint under **/feedback** that given a Product id returns a histogram of the ratings. This is  GET method and takes just pid.
+5. Create a service layer that will interact Redis.  (We don't want business logic mixing with the controller)
 
 ### Let's have a jdbc database also
 
-Let's allow a user to add rating comments with their rating and keep their ratings around for a while.  That seems like it is something useful.
+Let's allow a user to add rating comments with their rating and keep their ratings around for a while.
+That seems like it is something useful for a customer rating app to handle.  For this part of the tutorial,
+the objective is to have the app save reviews, products, and users in a database and also be able to
+retrieve them. (Why save if you won't retrieve, right?')  Let's get started...
 
 1. Modify the build.gradle file to have the following compile time dependancy:
 
        compile('org.springframework.boot:spring-boot-starter-data-jpa')
+       compile('org.springframework.boot:spring-boot-starter-data-rest')
        compile("com.h2database:h2")
 
+2. Create a few JPA based repositories.  One for each of the underlying pieces of data we care about.
+ Let's start with a repo for Products, Users, and finally one for UserReviews.
+3. Integrate the new Repositories into the the service layer where appropriate.
+4. Update the domain objects to have the desired JPA based annotations so the data you want to store is persisted.
+5. Update domainc objects to include a few Spring Data Rest projections.
+6. Submit a handful of "reviews"
 
-## TODO
+        http://localhost:8080/feedback/123/123/2.1
+        http://localhsot:8080/feedback/123/345/5
+        http://localhost:8080/feedback/999/123/4.2
+
+7. Verify that the Spring Data Rest Repository is returning the data you want. If you hit http://localhost:8080/products the following data should be returned:
+
+        {
+          productId: "999",
+          _embedded: {
+            reviews: [
+             {
+                userId: "123",
+                productId: "999",
+                rating: 4.2,
+                comments: "None",
+                _links: {
+                  self: {
+                    href: "http://localhost:8080/userReviews/3{?projection}",
+                    templated: true
+                  },
+                  user: {
+                    href: "http://localhost:8080/userReviews/3/user"
+                  },
+                  product: {
+                    href: "http://localhost:8080/userReviews/3/product"
+                  }
+              }
+             }
+            ]
+        }
+
