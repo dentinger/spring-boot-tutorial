@@ -1,15 +1,21 @@
 package com.example.controller;
 
-import java.util.DoubleSummaryStatistics;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
+import com.example.domain.Product;
+import com.example.domain.User;
+import com.example.service.ReviewService;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.DoubleSummaryStatistics;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -23,6 +29,9 @@ public class FeedbackController {
   @Autowired
   private RedisTemplate redisTemplate;
 
+  @Autowired
+  private ReviewService reviewService;
+
   @RequestMapping(value = "/feedback/{pid}/{uid}/{rating:.+}", method = POST)
   public String submitUserFeedback(@PathVariable("pid") String pid,
                                    @PathVariable("uid") String uid,
@@ -30,6 +39,8 @@ public class FeedbackController {
     HashOperations hashOps = redisTemplate.opsForHash();
     String key = KEY_PREFIX + pid;
     hashOps.put(key, uid, rating);
+
+    reviewService.processReview(uid, pid, rating);
     return "Okay: key=" + key;
   }
 
